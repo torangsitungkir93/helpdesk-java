@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping package="com.lawencon.ticketing.model">
+	<class name="Profile" table="t_profile">
+		<id name="id">
+			<generator class="increment"/>
+		</id>
+		
+		<property name="fullName" column="full_name" length="30" not-null="true"/>
+		<property name="phone" column="phone" length="15" not-null="true"/>
+		<many-to-one name="profilePhoto" class="File" column="photo_id" unique="true" not-null="true"/>
+		<property name="createdBy" column="created_by" not-null="true"/>
+		<property name="createdAt" column="created_at" not-null="true"/>
+		<property name="updatedBy" column="updated_by"/>
+		<property name="updatedAt" column="updated_at"/>
+		<property name="isActive" column="is_active" not-null="true"/>
+		<property name="ver" column="ver" not-null="true"/>
+	</class>
+</hibernate-mapping>

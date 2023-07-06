@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping package="com.lawencon.ticketing.model">
+	<class name="TicketDeveloper" table="t_ticketDeveloper">
+		<id name="id">
+			<generator class="increment"/>
+		</id>
+		
+		<many-to-one name="ticket" class="Ticket" column="ticket_id" not-null="true"/>
+		<many-to-one name="developer" class="User" column="developer_id" not-null="true"/>
+		<property name="createdBy" column="created_by" not-null="true"/>
+		<property name="createdAt" column="created_at" not-null="true"/>
+		<property name="updatedBy" column="updated_by"/>
+		<property name="updatedAt" column="updated_at"/>
+		<property name="isActive" column="is_active" not-null="true"/>
+		<property name="ver" column="ver" not-null="true"/>
+	</class>
+</hibernate-mapping>

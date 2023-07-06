@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+
+		<property name="mappingResources">
+			<list>
+				<value>
+					/model/user.xml
+				</value>
+				<value>
+					/model/ticket-developer.xml
+				</value>
+				<value>
+					/model/ticket.xml
+				</value>
+				<value>
+					/model/status.xml
+				</value>
+				<value>
+					/model/role.xml
+				</value>
+				<value>
+					/model/profile.xml
+				</value>
+				<value>
+					/model/products-cust.xml
+				</value>
+				<value>
+					/model/product.xml
+				</value>
+				<value>
+					/model/priority.xml
+				</value>
+				<value>
+					/model/pic-customer.xml
+				</value>
+				<value>
+					/model/file-ticket.xml
+				</value>
+				<value>
+					/model/file.xml
+				</value>
+				<value>
+					/model/company.xml
+				</value>
+				<value>
+					/model/comment-attach.xml
+				</value>
+				<value>
+					/model/comment.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

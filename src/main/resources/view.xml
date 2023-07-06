@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="customerView" class="com.lawencon.ticketing.view.CustomerView"
+		autowire="constructor">
+	</bean>
+
+	<bean id="developerView" class="com.lawencon.ticketing.view.DeveloperView"
+		autowire="constructor">
+	</bean>
+
+	<bean id="mainView" class="com.lawencon.ticketing.view.MainView"
+		autowire="constructor">
+	</bean>
+
+	<bean id="picView" class="com.lawencon.ticketing.view.PicView"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="superAdminView" class="com.lawencon.ticketing.view.SuperAdminView"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="userView" class="com.lawencon.ticketing.view.UserView"
+		autowire="constructor">
+	</bean>
+
+</beans>

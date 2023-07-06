@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="commentService" 
+		class="com.lawencon.ticketing.service.impl.CommentServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="picCustomerService" 
+		class="com.lawencon.ticketing.service.impl.PicCustomerServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="priorityService" 
+		class="com.lawencon.ticketing.service.impl.PriorityServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="productCustomerService" 
+		class="com.lawencon.ticketing.service.impl.ProductCustomerServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="productService" 
+		class="com.lawencon.ticketing.service.impl.ProductServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="roleService" 
+		class="com.lawencon.ticketing.service.impl.RoleServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="statusService" 
+		class="com.lawencon.ticketing.service.impl.StatusServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="ticketService" 
+		class="com.lawencon.ticketing.service.impl.TicketServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="userService" 
+		class="com.lawencon.ticketing.service.impl.UserServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="ticketDeveloperService" 
+		class="com.lawencon.ticketing.service.impl.TicketDeveloperServiceImpl"
+		autowire="constructor">
+	</bean>
+	
+	
+</beans>

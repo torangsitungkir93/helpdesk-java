@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="commentAttachDao"
+		class="com.lawencon.ticketing.dao.impl.CommentAttachDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="commentDao"
+		class="com.lawencon.ticketing.dao.impl.CommentDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="fileDao"
+		class="com.lawencon.ticketing.dao.impl.FileDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="fileTicketDao"
+		class="com.lawencon.ticketing.dao.impl.FileTicketDaoImpl"
+		autowire="constructor">
+	</bean>
+	<bean id="picCustomerDao"
+		class="com.lawencon.ticketing.dao.impl.PicCustomerDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="priorityDao"
+		class="com.lawencon.ticketing.dao.impl.PriorityDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="productCustomerDao"
+		class="com.lawencon.ticketing.dao.impl.ProductCustomerDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="productDao"
+		class="com.lawencon.ticketing.dao.impl.ProductDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="profileDao"
+		class="com.lawencon.ticketing.dao.impl.ProfileDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="roleDao"
+		class="com.lawencon.ticketing.dao.impl.RoleDaoImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="statusDao"
+		class="com.lawencon.ticketing.dao.impl.StatusDaoImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="ticketDao"
+		class="com.lawencon.ticketing.dao.impl.TicketDaoImpl"
+		autowire="constructor">
+	</bean>
+	<bean id="userDao"
+		class="com.lawencon.ticketing.dao.impl.UserDaoImpl"
+		autowire="constructor">
+	</bean>
+		<bean id="ticketDeveloperDao"
+		class="com.lawencon.ticketing.dao.impl.TicketDeveloperDaoImpl"
+		autowire="constructor">
+	</bean>
+
+</beans>
