@@ -1,6 +1,5 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.hibernate.SessionFactory;
 import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.FileDao;
 import com.lawencon.ticketing.dao.FileTicketDao;
+import com.lawencon.ticketing.dao.PriorityDao;
 import com.lawencon.ticketing.dao.StatusDao;
 import com.lawencon.ticketing.dao.TicketDao;
 import com.lawencon.ticketing.model.File;
@@ -32,14 +32,19 @@ public class TicketServiceImpl implements TicketService {
 	private final FileDao fileDao;
 	private final FileTicketDao fileTicketDao;
 	private final StatusService statusService;
+	private final PriorityDao priorityDao;
+	private final StatusDao statusDao;
 	private final EntityManager em;
 
 	public TicketServiceImpl(StatusDao statusDao, TicketDao ticketDao, FileDao fileDao,
-			FileTicketDao fileTicketDao, StatusService statusService,DataSource dataSource,SessionFactory factory) throws SQLException  {
+			FileTicketDao fileTicketDao, StatusService statusService,PriorityDao priorityDao,
+			DataSource dataSource,SessionFactory factory) throws SQLException  {
 		this.ticketDao = ticketDao;
 		this.fileDao = fileDao;
 		this.fileTicketDao = fileTicketDao;
 		this.statusService = statusService;
+		this.priorityDao = priorityDao;
+		this.statusDao = statusDao;
 		this.em = EntityManagerConfig.get(factory);
 	}
 
@@ -48,8 +53,8 @@ public class TicketServiceImpl implements TicketService {
 			Long createdById, List<File> fileLists) throws SQLException {
 		final Ticket ticket = new Ticket();
 		final User user = new User();
-		final Priority priority = new Priority();
-		final Status status = new Status();
+		final Priority priority = priorityDao.getByIdRef(priorityId);
+		
 		final Product product = new Product();
 
 		try {
@@ -57,11 +62,10 @@ public class TicketServiceImpl implements TicketService {
 			user.setId(userId);
 			ticket.setUser(user);
 
-			priority.setId(priorityId);
 			ticket.setPriority(priority);
 
 			final Long statusId = statusService.getByRoleAndStatus(null, null).getId();
-			status.setId(statusId);
+			final Status status = statusDao.getByIdRef(statusId);
 			ticket.setStatus(status);
 
 			product.setId(productId);

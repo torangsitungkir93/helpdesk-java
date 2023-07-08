@@ -20,7 +20,6 @@ public class TicketDeveloperDaoImpl implements TicketDeveloperDao{
 	
 	@Override
 	public List<TicketDeveloper> getAll() throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -1,6 +1,5 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 

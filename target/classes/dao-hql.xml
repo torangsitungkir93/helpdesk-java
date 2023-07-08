@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="commentAttachDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.CommentAttachDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="commentDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.CommentDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="companyDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.CompanyDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="fileDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.FileDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="fileTicketDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.FileTicketDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+	<bean id="picCustomerDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.PicCustomerDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="priorityDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.PriorityDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="productCustomerDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.ProductCustomerDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="productDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.ProductDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="profileDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.ProfileDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="roleDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.RoleDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+	<bean id="statusDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.StatusDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+	
+	<bean id="ticketDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.TicketDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+	<bean id="userDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.UserDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+		<bean id="ticketDeveloperDaoHQL"
+		class="com.lawencon.ticketing.dao.impl.hql.TicketDeveloperDaoHQLImpl"
+		autowire="constructor">
+	</bean>
+
+</beans>

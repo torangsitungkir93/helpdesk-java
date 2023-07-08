@@ -7,4 +7,5 @@ import com.lawencon.ticketing.model.Role;
 
 public interface RoleDao {
 	List<Role> getAll() throws SQLException;
+	Role getById(Long id) throws SQLException;
 }

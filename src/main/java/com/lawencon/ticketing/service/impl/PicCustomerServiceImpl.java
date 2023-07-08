@@ -1,11 +1,14 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
+
+import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.PicCustomerDao;
 import com.lawencon.ticketing.model.PicCustomer;
 import com.lawencon.ticketing.model.User;
@@ -17,17 +20,17 @@ public class PicCustomerServiceImpl implements PicCustomerService{
 	private PicCustomer picCustomer = null;
 	private User userPic = null;
 	private User userCustomer = null;
-	private final Connection conn;
+	private final EntityManager em;
 
-	public PicCustomerServiceImpl(PicCustomerDao picCustomerDao,DataSource dataSource)throws SQLException {
+	public PicCustomerServiceImpl(PicCustomerDao picCustomerDao,DataSource dataSource,SessionFactory factory)throws SQLException {
 		this.picCustomerDao = picCustomerDao;
-		this.conn = dataSource.getConnection();
-		this.conn.setAutoCommit(false);
+		this.em = EntityManagerConfig.get(factory);
 	}
 
 	@Override
 	public PicCustomer insert(Long picId, Long customerId, Long createdById) throws SQLException {
 		try {
+			this.em.getTransaction().begin();
 			userPic = new User();
 			userPic.setId(picId);
 			
@@ -45,11 +48,11 @@ public class PicCustomerServiceImpl implements PicCustomerService{
 			picCustomer.setVer(0);
 
 			picCustomerDao.insert(picCustomer);
-			conn.commit();
+			this.em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				conn.rollback();
+				this.em.getTransaction().rollback();
 			}catch (Exception e1) {
 				e1.printStackTrace();
 			}

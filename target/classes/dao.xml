@@ -13,6 +13,11 @@
 		class="com.lawencon.ticketing.dao.impl.CommentDaoImpl"
 		autowire="constructor">
 	</bean>
+	
+	<bean id="companyDao"
+		class="com.lawencon.ticketing.dao.impl.CompanyDaoImpl"
+		autowire="constructor">
+	</bean>
 
 	<bean id="fileDao"
 		class="com.lawencon.ticketing.dao.impl.FileDaoImpl"

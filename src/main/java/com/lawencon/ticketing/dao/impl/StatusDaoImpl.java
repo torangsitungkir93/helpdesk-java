@@ -1,7 +1,9 @@
 package com.lawencon.ticketing.dao.impl;
 
 import java.sql.SQLException;
+
 import javax.persistence.EntityManager;
+
 import org.hibernate.SessionFactory;
 
 import com.lawencon.ticketing.config.EntityManagerConfig;
@@ -32,6 +34,12 @@ public class StatusDaoImpl implements StatusDao{
 			status.setStatusName(statusArr[1].toString());
 			status.setStatusCode(statusArr[2].toString());
 		}
+		return status;
+	}
+
+	@Override
+	public Status getByIdRef(Long id) throws SQLException {
+		final Status status = this.em.getReference(Status.class, id);
 		return status;
 	}
 

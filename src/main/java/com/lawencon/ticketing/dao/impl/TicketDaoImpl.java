@@ -1,26 +1,15 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
 
 import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.TicketDao;
-import com.lawencon.ticketing.model.Priority;
-import com.lawencon.ticketing.model.Profile;
-import com.lawencon.ticketing.model.Role;
-import com.lawencon.ticketing.model.Status;
 import com.lawencon.ticketing.model.Ticket;
-import com.lawencon.ticketing.model.User;
 
 public class TicketDaoImpl implements TicketDao {
 	private final EntityManager em;
@@ -59,18 +48,6 @@ public class TicketDaoImpl implements TicketDao {
 
 	@Override
 	public Ticket update(Ticket ticket) throws SQLException {
-//	    final String sql = "UPDATE t_ticket SET ticket_status_id = ?, updated_by = ?, updated_at = ?, is_active = ?, ver = ver + 1 WHERE id = ? RETURNING *";
-//	    final PreparedStatement ps = conn.prepareStatement(sql);
-//	    ps.setLong(1, ticket.getStatus().getId());
-//	    ps.setLong(2, ticket.getUpdatedBy());
-//	    ps.setTimestamp(3, Timestamp.valueOf(ticket.getUpdatedAt()));
-//	    ps.setBoolean(4, ticket.getIsActive());
-//	    ps.setLong(5, ticket.getId());   
-//	    final ResultSet rs = ps.executeQuery();
-//	    
-//	    if (rs.next()) {    
-//	    	ticket.setVer(rs.getInt("ver"));
-//	    }
 		return ticket;
 	}
 
@@ -83,7 +60,8 @@ public class TicketDaoImpl implements TicketDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ticket> getAllByIdPic(Long idPic, String statusCode, String statusCode2) throws SQLException {
-		final String sql = "SELECT * " + "FROM t_ticket tt " + "INNER JOIN t_status ts ON ts.id = tt.ticket_status_id "
+		final String sql = "SELECT * " + "FROM t_ticket tt " 
+				+ "INNER JOIN t_status ts ON ts.id = tt.ticket_status_id "
 				+ "INNER JOIN t_pic_customer tpc ON tpc.customer_id = tt.user_id "
 				+ "INNER JOIN t_users tu ON tpc.customer_id = tu.id "
 				+ "INNER JOIN t_profile tp ON tp.id = tu.profile_id "

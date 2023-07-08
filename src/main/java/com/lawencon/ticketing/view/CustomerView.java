@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lawencon.ticketing.constant.RoleConst;
+import com.lawencon.ticketing.model.Comment;
+import com.lawencon.ticketing.model.CommentAttach;
 import com.lawencon.ticketing.model.File;
 import com.lawencon.ticketing.model.Priority;
 import com.lawencon.ticketing.model.ProductCustomer;
@@ -20,6 +22,7 @@ public class CustomerView {
 	private final PriorityService priorityService;
 	private final TicketService ticketService;
 	private final CommentService commentService;
+	private boolean isRunning=true;
 
 	private Long currentIdUser = (long) 0;
 	private byte choice=0;
@@ -33,8 +36,8 @@ public class CustomerView {
 		this.commentService = commentService;
 	}
 
-	public void show() throws Exception {
-		do {
+	public final void show() throws Exception {
+		while(isRunning) {
 			System.out.println("-----------------------------------");
 			System.out.println("--- Halooo " + currentNameUser);
 			System.out.println("-----------------------------------");
@@ -64,7 +67,6 @@ public class CustomerView {
 					Ticket t = tickets.get(i);
 					System.out.printf("%-3s %-8s %-16s %-17s %s\n", (i + 1) + ".", t.getTicketCode(),
 							t.getPriority().getNamePriority(), t.getStatus().getStatusName(), t.getTicketTitle());
-
 				}
 
 				if (tickets.size() > 0) {
@@ -82,15 +84,12 @@ public class CustomerView {
 				}
 				break;
 			case 4:
-				currentNameUser = "";
+				this.isRunning=false;
 				break;
 			default:
 				System.out.println("Pilihan tidak valid");
 			}
-			if (currentNameUser.equals("")) {
-				System.out.println("Anda telah Logout");
-			}
-		} while (choice != 4 && !currentNameUser.equals(""));
+		}
 	}
 
 	private void showTicketDetail() throws Exception {
@@ -117,18 +116,32 @@ public class CustomerView {
 			System.out.println("3. Keluar");
 
 			final int commentChoice = (int) ScannerUtil.getScannerNumber("Pilih menu : ", 3);
-
+			final Long idTicket = getIdTicket(ticketChoice);
 			switch (commentChoice) {
 			case 1:
 				System.out.println("---- Tampilkan Komentar ------");
-				System.out.println("tampilan");
+				final List<Comment> comments=commentService.getAllByTicket(idTicket);
+				System.out.println("[][]->> "+comments.get(0).getTicket().getTicketTitle()+" <<-[][]");
+				for (int i = 0; i < comments.size(); i++) {
+					Comment c = comments.get(i);
+					System.out.println("------------------------------");
+					 System.out.println("User   : " + c.getUser().getProfile().getFullName());
+					    System.out.println("Comment: " + c.getMessage());
+					final List<CommentAttach> commentAttachs = commentService.getAllByComment(c.getId());
+					if(commentAttachs.size()>0) {
+						System.out.print("Attachment : ");
+						for(int j=0;j<commentAttachs.size();j++) {
+							CommentAttach ca = commentAttachs.get(j);
+							System.out.print(ca.getFile().getFiles()+",");
+						}
+					}
+					System.out.println("\n------------------------------");
+				}
 				break;
 			case 2:
 				System.out.println("---- Berkomentar ------");
 
-				final Long idTicket = getIdTicket(ticketChoice);
 				String comment = ScannerUtil.getScannerString("Komentar : ");
-
 				List<File> fileList = new ArrayList<>();
 				String addFilesChoice = ScannerUtil.getScannerString("Apakah Anda ingin menambahkan file? (y/n): ");
 
@@ -163,7 +176,6 @@ public class CustomerView {
 		} else {
 			System.out.println("Anda Belum memiliki TIcket");
 		}
-
 	}
 
 	private void createTicket() throws Exception {
@@ -175,50 +187,54 @@ public class CustomerView {
 		System.out.println("+=====  Subscribed Product  ====+");
 		System.out.println("+===============================+");
 
-		for (ProductCustomer p : products) {
-			System.out.println((counterP + 1) + ". " + p.getProduct().getProductName());
-			++counterP;
+		if(products.size()>0) {
+			for (ProductCustomer p : products) {
+				System.out.println((counterP + 1) + ". " + p.getProduct().getProductName());
+				++counterP;
+			}
+
+			final int productChoice = (int) ScannerUtil.getScannerNumber("Pilih Product : ", counterP);
+			final List<Priority> priorities = priorityService.getAll();
+			int counterPri = 1;
+			System.out.println("+===============================+");
+			System.out.println("+=======  Priority Level  ======+");
+			System.out.println("+===============================+");
+
+			for (Priority p : priorities) {
+				System.out.println(counterPri + ". " + p.getNamePriority());
+				++counterPri;
+			}
+
+			final int priorityChoice = (int) ScannerUtil.getScannerNumber("Pilih Level Prioritas : ", counterPri);
+
+			String title = ScannerUtil.getScannerString("Judul Tiket : ");
+			String body = ScannerUtil.getScannerString("Ceritakan keluhan anda : ");
+
+			List<File> fileList = new ArrayList<>();
+			String addMoreFiles;
+			addMoreFiles = ScannerUtil.getScannerString("Ingin Memasukkan File (y/n) : ");
+			while (addMoreFiles.equalsIgnoreCase("y")) {
+				final String fileName = ScannerUtil.getScannerString("Masukkan path file : ");
+				File file = new File();
+				file.setFiles(fileName);
+				final int lastDot = fileName.lastIndexOf(".");
+				String fileExt = fileName.substring(lastDot + 1);
+				file.setExt(fileExt);
+				file.setCreatedBy(currentIdUser);
+				final LocalDateTime timeNow = LocalDateTime.now();
+				file.setCreatedAt(timeNow);
+				file.setIsActive(true);
+				file.setVer(0);
+				fileList.add(file);
+				addMoreFiles = ScannerUtil.getScannerString("Ingin Menambah File (y/n) : ");
+			}
+
+			ticketService.createTicket(
+					title, body, currentIdUser, getIdProduct(productChoice),
+					getIdPriority(priorityChoice), currentIdUser, fileList);
+		}else {
+			System.out.println("Anda belum Subscribed Product");
 		}
-
-		final int productChoice = (int) ScannerUtil.getScannerNumber("Pilih Product : ", counterP);
-
-		final List<Priority> priorities = priorityService.getAll();
-		int counterPri = 1;
-		System.out.println("+===============================+");
-		System.out.println("+=======  Priority Level  ======+");
-		System.out.println("+===============================+");
-
-		for (Priority p : priorities) {
-			System.out.println(counterPri + ". " + p.getNamePriority());
-			++counterPri;
-		}
-
-		final int priorityChoice = (int) ScannerUtil.getScannerNumber("Pilih Level Prioritas : ", counterPri);
-
-		String title = ScannerUtil.getScannerString("Judul Tiket : ");
-		String body = ScannerUtil.getScannerString("Ceritakan keluhan anda : ");
-
-		List<File> fileList = new ArrayList<>();
-		String addMoreFiles;
-		addMoreFiles = ScannerUtil.getScannerString("Ingin Memasukkan File (y/n) : ");
-		while (addMoreFiles.equalsIgnoreCase("y")) {
-			final String fileName = ScannerUtil.getScannerString("Masukkan path file : ");
-			File file = new File();
-			file.setFiles(fileName);
-			final int lastDot = fileName.lastIndexOf(".");
-			String fileExt = fileName.substring(lastDot + 1);
-			file.setExt(fileExt);
-			file.setCreatedBy(currentIdUser);
-			final LocalDateTime timeNow = LocalDateTime.now();
-			file.setCreatedAt(timeNow);
-			file.setIsActive(true);
-			file.setVer(0);
-			fileList.add(file);
-			addMoreFiles = ScannerUtil.getScannerString("Ingin Menambah File (y/n) : ");
-		}
-
-		ticketService.createTicket(title, body, currentIdUser, getIdProduct(productChoice),
-				getIdPriority(priorityChoice), currentIdUser, fileList);
 
 	}
 
@@ -241,7 +257,7 @@ public class CustomerView {
 	public void setNameUser(String user) {
 		this.currentNameUser = user;
 	}
-
+	
 	private Long getIdTicket(int index) throws Exception {
 		final List<Ticket> tickets = ticketService.getAllByIdCust(currentIdUser);
 		final Long id = tickets.get(index - 1).getId();

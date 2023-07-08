@@ -11,7 +11,7 @@ public interface UserService {
 	List<User> getAll() throws SQLException;
 	List<User> getByRoleCode(String roleCode) throws SQLException;
 	User insert(User user, Profile profile, File file) throws SQLException;
-	User update(User user, Profile profile) throws SQLException;
-	Profile changePhoto(Long profileId, File file) throws SQLException;
+	User getUserById(Long id) throws SQLException;
+	Profile changePhoto(Long userId,Long profileId, File file) throws SQLException;
 	User login(String userName, String userPassword) throws SQLException;
 }

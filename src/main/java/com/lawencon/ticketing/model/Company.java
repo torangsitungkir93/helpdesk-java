@@ -3,6 +3,7 @@ package com.lawencon.ticketing.model;
 public class Company extends BaseModel{
 	private String nameCompany;
 	private String companyAddress;
+	private String companyCode;
 	private File photoId;
 	
 	
@@ -23,5 +24,11 @@ public class Company extends BaseModel{
 	}
 	public void setPhotoId(File photoId) {
 		this.photoId = photoId;
+	}
+	public String getCompanyCode() {
+		return companyCode;
+	}
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
 	}
 }

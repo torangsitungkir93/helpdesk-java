@@ -1,23 +1,25 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
+
+import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.RoleDao;
 import com.lawencon.ticketing.model.Role;
 import com.lawencon.ticketing.service.RoleService;
 
 public class RoleServiceImpl implements RoleService{
 	private final RoleDao roleDao;
-	private final Connection conn;
+	private final EntityManager em;
 	
-	public RoleServiceImpl(RoleDao roleDao,DataSource dataSource) throws SQLException {
+	public RoleServiceImpl(RoleDao roleDao,DataSource dataSource,SessionFactory factory) throws SQLException {
 		this.roleDao = roleDao;
-		this.conn = dataSource.getConnection();
-		this.conn.setAutoCommit(false);
+		this.em = EntityManagerConfig.get(factory);
 	}
 	
 	@Override

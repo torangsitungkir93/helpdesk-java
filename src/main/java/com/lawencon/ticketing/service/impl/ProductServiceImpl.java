@@ -1,24 +1,31 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
+
+import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.ProductDao;
+import com.lawencon.ticketing.model.Company;
+import com.lawencon.ticketing.model.File;
 import com.lawencon.ticketing.model.Product;
+import com.lawencon.ticketing.model.Profile;
+import com.lawencon.ticketing.model.Role;
+import com.lawencon.ticketing.model.User;
 import com.lawencon.ticketing.service.ProductService;
 
 public class ProductServiceImpl implements ProductService {
 	private final ProductDao productDao;
-	private final Connection conn;
+	private final EntityManager em;
 	
-	public ProductServiceImpl(ProductDao productDao,DataSource dataSource) throws SQLException {
+	public ProductServiceImpl(ProductDao productDao,DataSource dataSource,SessionFactory factory) throws SQLException {
 		this.productDao = productDao;
-		this.conn = dataSource.getConnection();
-		this.conn.setAutoCommit(false);
+		this.em = EntityManagerConfig.get(factory);
 	}
 
 	@Override
@@ -28,9 +35,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product insert(String productCode, String productName, Long createdById) throws SQLException {
+	public Product insertProduct(String productCode, String productName, Long createdById) throws SQLException {
 		Product product = new Product();
 		try {
+			this.em.getTransaction().begin();
 			product.setProductCode(productCode);
 			product.setProductName(productName);
 			product.setCreatedBy(createdById);
@@ -41,11 +49,11 @@ public class ProductServiceImpl implements ProductService {
 			product.setVer(0);
 
 			productDao.insert(product);
-			conn.commit();
+			this.em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				conn.rollback();
+				this.em.getTransaction().rollback();
 			}catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -54,23 +62,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product update(String productCode,Long createdBy) throws SQLException {
+	public Product updateProduct(Long idProduct,String productName,Long createdBy) throws SQLException {
 		Product updatedProduct = new Product();
 		try {
-			final LocalDateTime timeNow = LocalDateTime.now();
-			updatedProduct.setUpdatedAt (timeNow);
-			updatedProduct.setUpdatedBy(createdBy);
+			this.em.getTransaction().begin();
+			updatedProduct = productDao.getById(idProduct);
+			updatedProduct.setProductName(productName);
 			productDao.update(updatedProduct);
-			conn.commit();
+			this.em.getTransaction().commit();
 		} catch (Exception e) {
-			e.printStackTrace () ;
-				try {
-					conn.rollback() ;
-				} catch (Exception el) {
-					e.printStackTrace();
-				}
+			e.printStackTrace();
+			try {
+				this.em.getTransaction().rollback();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		return updatedProduct;
 	}
-	
 }

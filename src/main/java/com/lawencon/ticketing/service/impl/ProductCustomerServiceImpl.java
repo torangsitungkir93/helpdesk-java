@@ -1,12 +1,15 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
+
+import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.ProductCustomerDao;
 import com.lawencon.ticketing.model.Product;
 import com.lawencon.ticketing.model.ProductCustomer;
@@ -20,17 +23,17 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
 	private User user = null;
 	private Product product = null;
 
-	private final Connection conn;
+	private final EntityManager em;
 
-	public ProductCustomerServiceImpl(ProductCustomerDao productCustomerDao,DataSource dataSource) throws SQLException{
+	public ProductCustomerServiceImpl(ProductCustomerDao productCustomerDao,DataSource dataSource,SessionFactory factory) throws SQLException{
 		this.productCustomerDao = productCustomerDao;
-		this.conn = dataSource.getConnection();
-		this.conn.setAutoCommit(false);
+		this.em = EntityManagerConfig.get(factory);
 	}
 
 	@Override
 	public ProductCustomer insert(Long userId, Long productId, Long createdById) throws SQLException {
 		try {
+			this.em.getTransaction().begin();
 			user = new User();
 			user.setId(userId);
 
@@ -48,11 +51,11 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
 			productCustomer.setVer(0);
 
 			productCustomerDao.insert(productCustomer);
-			conn.commit();
+			this.em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				conn.rollback();
+				this.em.getTransaction().rollback();
 			}catch (Exception e1) {
 				e1.printStackTrace();
 			}

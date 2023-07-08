@@ -1,22 +1,15 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
 
 import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.ProductDao;
 import com.lawencon.ticketing.model.Product;
-import com.lawencon.ticketing.model.ProductCustomer;
 public class ProductDaoImpl implements ProductDao {
 	private final EntityManager em;
 	
@@ -40,19 +33,13 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Product update(Product product) throws SQLException {
-//	    final String sql = "UPDATE t_product SET product_name = ?, updated_by = ?, updated_at = ?, is_active = ?, ver = ver + 1 WHERE id = ? RETURNING *";
-//	    final PreparedStatement ps = conn.prepareStatement(sql);
-//	    ps.setString(1, product.getProductName());
-//	    ps.setLong(2, product.getUpdatedBy());
-//	    ps.setTimestamp(3, Timestamp.valueOf(product.getUpdatedAt()));
-//	    ps.setBoolean(4, product.getIsActive());
-//	    ps.setLong(5, product.getId());   
-//	    final ResultSet rs = ps.executeQuery();
-//	    
-//	    if (rs.next()) {    
-//	    	product.setVer(rs.getInt("ver"));
-//	    }
-	    return null;
+		return product;
+	}
+
+	@Override
+	public Product getById(Long id) throws SQLException {
+		final Product product = this.em.find(Product.class, id);
+		return product;
 	}
 	
 }

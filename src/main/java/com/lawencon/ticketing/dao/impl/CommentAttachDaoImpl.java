@@ -1,6 +1,7 @@
 package com.lawencon.ticketing.dao.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -22,6 +23,19 @@ public class CommentAttachDaoImpl implements CommentAttachDao{
 	public CommentAttach insert(CommentAttach commentAttach) throws SQLException {
 		em.persist(commentAttach);
 		return commentAttach;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CommentAttach> getAllByComment(Long commentId) throws SQLException {
+		final String sql = "SELECT * "
+				+ "FROM t_comment_attach tca  "
+				+ "INNER JOIN t_comment tc ON tca.comment_id = tc.id "
+				+ "INNER JOIN t_file tf ON tca.file_id = tf.id  "
+				+ "WHERE tc.id = :id";
+
+		final List<CommentAttach> result = this.em.createNativeQuery(sql, CommentAttach.class).setParameter("id", commentId).getResultList();
+		return result;
 	}
 
 

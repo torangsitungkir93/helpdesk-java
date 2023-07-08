@@ -1,6 +1,5 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.persistence.EntityManager;
@@ -42,6 +41,9 @@ public class StatusServiceImpl implements StatusService{
 			}else if (roleCode.equals(RoleConst.PIC.getRoleCode())
 					&& statusCode.equals(StatusConst.OPEN.getStatusCode())){
 				status = statusDao.getStatusByCode(StatusConst.PENDINGAGENT.getStatusCode());
+			}else if (roleCode.equals(RoleConst.PIC.getRoleCode())
+					&& statusCode.equals(StatusConst.REOPEN.getStatusCode())){
+				status = statusDao.getStatusByCode(StatusConst.PENDINGAGENT.getStatusCode());
 			}else if (roleCode.equals(RoleConst.DEVELOPER.getRoleCode())
 					&& statusCode.equals(StatusConst.PENDINGAGENT.getStatusCode())){
 				status = statusDao.getStatusByCode(StatusConst.ONPROGGRESS.getStatusCode());
@@ -54,6 +56,12 @@ public class StatusServiceImpl implements StatusService{
 		}else {
 			status = statusDao.getStatusByCode(StatusConst.OPEN.getStatusCode());  
 		}
+		return status;
+	}
+
+	@Override
+	public Status getByIdRef(Long id) throws SQLException {
+		final Status status = statusDao.getByIdRef(id);
 		return status;
 	}
 }

@@ -32,10 +32,15 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<User> getByRoleCode(String roleCode) throws SQLException {
 		final String sql = "SELECT " 
-				+ "	* " + "FROM " + "	t_users u " + "INNER JOIN t_role r ON "
-				+ "	r.id = u.role_id " + "INNER JOIN t_profile tp ON " + "	tp.id = u.profile_id "
+				+ "	* " 
+				+ "FROM " 
+				+ "	t_users u " 
+				+ "INNER JOIN t_role r ON "
+				+ "	r.id = u.role_id " 
+				+ "INNER JOIN t_profile tp ON " 
+				+ "	tp.id = u.profile_id "
 				+ "WHERE r.code_role = :roleCode";
-		final List<User> users = this.em.createNativeQuery(sql).setParameter("roleCode", roleCode).getResultList();
+		final List<User> users = this.em.createNativeQuery(sql,User.class).setParameter("roleCode", roleCode).getResultList();
 		return users;
 	}
 
@@ -83,8 +88,9 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User update(User user) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public Profile update(Profile profile) throws SQLException {
+		Profile profileResult = this.em.merge(profile);
+		this.em.flush();
+		return profileResult;
 	}
 }

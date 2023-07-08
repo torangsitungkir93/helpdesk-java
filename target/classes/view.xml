@@ -23,9 +23,4 @@
 	<bean id="superAdminView" class="com.lawencon.ticketing.view.SuperAdminView"
 		autowire="constructor">
 	</bean>
-	
-	<bean id="userView" class="com.lawencon.ticketing.view.UserView"
-		autowire="constructor">
-	</bean>
-
 </beans>

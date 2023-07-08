@@ -2,7 +2,7 @@ package com.lawencon.ticketing.model;
 
 public class PicCustomer extends BaseModel{
 	private User pic;
-	private User Customer;
+	private User customer;
 	
 	public User getPic() {
 		return pic;
@@ -11,9 +11,10 @@ public class PicCustomer extends BaseModel{
 		this.pic = pic;
 	}
 	public User getCustomer() {
-		return Customer;
+		return customer;
 	}
 	public void setCustomer(User customer) {
-		Customer = customer;
+		this.customer = customer;
 	}
+	
 }

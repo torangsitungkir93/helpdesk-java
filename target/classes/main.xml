@@ -4,10 +4,12 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- <import resource="dao-hql.xml"/> -->
 	<import resource="dao.xml"/>
 	<import resource="service.xml"/>
 	<import resource="view.xml"/> 
 	<import resource="datasource.xml"/>
 	<import resource="hibernate.xml"/>
+	<!-- <import resource="/db/migration/db-migration.xml"/> -->
 
 </beans>

@@ -14,6 +14,11 @@
 		autowire="constructor">
 	</bean>
 	
+	<bean id="companyService" 
+		class="com.lawencon.ticketing.service.impl.CompanyServiceImpl"
+		autowire="constructor">
+	</bean>
+	
 	<bean id="priorityService" 
 		class="com.lawencon.ticketing.service.impl.PriorityServiceImpl"
 		autowire="constructor">

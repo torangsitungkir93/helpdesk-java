@@ -5,5 +5,6 @@ import java.sql.SQLException;
 import com.lawencon.ticketing.model.Status;
 
 public interface StatusService {
-	Status getByRoleAndStatus(String roleCode,String statusCode) throws SQLException;;
+	Status getByRoleAndStatus(String roleCode,String statusCode) throws SQLException;
+	Status getByIdRef(Long id) throws SQLException;
 }

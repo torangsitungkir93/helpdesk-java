@@ -25,13 +25,12 @@ public class ProfileDaoImpl implements ProfileDao{
 
 	@Override
 	public Profile insert(Profile profile) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		em.persist(profile);
+		return profile;
 	}
 
 	@Override
 	public Profile update(Profile profile) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return profile;
 	}
 }

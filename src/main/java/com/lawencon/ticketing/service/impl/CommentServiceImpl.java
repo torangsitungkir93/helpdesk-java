@@ -1,16 +1,20 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
+
+import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.CommentAttachDao;
 import com.lawencon.ticketing.dao.CommentDao;
 import com.lawencon.ticketing.dao.FileDao;
 import com.lawencon.ticketing.dao.TicketDao;
+import com.lawencon.ticketing.dao.UserDao;
 import com.lawencon.ticketing.model.Comment;
 import com.lawencon.ticketing.model.CommentAttach;
 import com.lawencon.ticketing.model.File;
@@ -23,15 +27,16 @@ public class CommentServiceImpl implements CommentService {
 	private final FileDao fileDao;
 	private final CommentAttachDao commentAttachDao;
 	private final CommentDao commentDao;
-	private final Connection conn;
+	private final UserDao userDao;
+	private final EntityManager em;
 
 	public CommentServiceImpl(TicketDao ticketDao, FileDao fileDao, CommentAttachDao commentAttachDao,
-			CommentDao commentDao, DataSource dataSource) throws SQLException {
+			CommentDao commentDao, DataSource dataSource,UserDao userDao,SessionFactory factory) throws SQLException {
 		this.fileDao = fileDao;
 		this.commentAttachDao = commentAttachDao;
 		this.commentDao = commentDao;
-		this.conn = dataSource.getConnection();
-		this.conn.setAutoCommit(false);
+		this.userDao = userDao;
+		this.em = EntityManagerConfig.get(factory);
 	}
 
 
@@ -41,10 +46,10 @@ public class CommentServiceImpl implements CommentService {
 
 		final Comment comment = new Comment();
 		final Ticket ticket = new Ticket();
-		final User user = new User();
+		final User user = userDao.getById(userId);
 
 		try {
-			user.setId(userId);
+			this.em.getTransaction().begin();
 			comment.setUser(user);
 
 			ticket.setId(ticketId);
@@ -72,16 +77,28 @@ public class CommentServiceImpl implements CommentService {
 					commentAttachDao.insert(commentAttach);
 				}
 			}
-			conn.commit();
+			this.em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				conn.rollback();
+				this.em.getTransaction().rollback();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
 		}
 		return comment;
+	}
+
+	@Override
+	public List<Comment> getAllByTicket(Long commentId) throws SQLException {
+		final List<Comment> comments = commentDao.getAllByTicket(commentId);
+		return comments;
+	}
+
+	@Override
+	public List<CommentAttach> getAllByComment(Long commentId) throws SQLException {
+		final List<CommentAttach> commentAttachs = commentAttachDao.getAllByComment(commentId);
+		return commentAttachs;
 	}
 
 }

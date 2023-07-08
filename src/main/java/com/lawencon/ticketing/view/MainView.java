@@ -13,6 +13,7 @@ public class MainView {
 	private final SuperAdminView superAdminView;
 	private final DeveloperView developerView;
 	private final PicView picView;
+	private boolean isRunning = true;
 
 	public MainView(UserService userService, PriorityService priorityService, CustomerView customerView,
 			SuperAdminView superAdminView, DeveloperView developerView, PicView picView) {
@@ -24,50 +25,52 @@ public class MainView {
 	}
 
 	public void showMain() throws Exception {
-		System.out.println("+=====================+");
-		System.out.println("|1. Login             |");
-		System.out.println("|2. Keluar            |");
-		System.out.println("+=====================+");
+		while (isRunning) {
+			System.out.println("+=====================+");
+			System.out.println("|1. Login             |");
+			System.out.println("|2. Keluar            |");
+			System.out.println("+=====================+");
 
-		final int choice = (int) ScannerUtil.getScannerNumber("Pilih Menu: ", 2);
-		if (choice == 1) {
-			final String email = ScannerUtil.getScannerString("Masukkan Email : ");
-			final String password = ScannerUtil.getScannerString("Masukkan Password : ");
-			final User loggedInUser = userService.login(email, password);
+			final int choice = (int) ScannerUtil.getScannerNumber("Pilih Menu: ", 2);
+			if (choice == 1) {
+				final String email = ScannerUtil.getScannerString("Masukkan Email : ");
+				final String password = ScannerUtil.getScannerString("Masukkan Password : ");
+				final User loggedInUser = userService.login(email, password);
 
-			if (loggedInUser != null) {
-				final Role userRole = loggedInUser.getRole();
-				if (userRole != null) {
-					final String currentRoleUser = userRole.getCodeRole();
-					final String currentNameUser = loggedInUser.getProfile().getFullName();
-					Long idUser = loggedInUser.getId();
+				if (loggedInUser != null) {
+					final Role userRole = loggedInUser.getRole();
+					if (userRole != null) {
+						final String currentRoleUser = userRole.getCodeRole();
+						final String currentNameUser = loggedInUser.getProfile().getFullName();
+						Long idUser = loggedInUser.getId();
 
-					if (currentRoleUser.equals(RoleConst.SUPERADMIN.getRoleCode())) {
-						superAdminView.setIdCurrentUser(idUser);
-						superAdminView.setNameUser(currentNameUser);
-						superAdminView.show();
-					} else if (currentRoleUser.equals(RoleConst.CUST.getRoleCode())) {
-						customerView.setIdCurrentUser(idUser);
-						customerView.setNameUser(currentNameUser);
-						customerView.show();
-					} else if (currentRoleUser.equals(RoleConst.DEVELOPER.getRoleCode())) {
-						developerView.setIdCurrentUser(idUser);
-						developerView.setNameUser(currentNameUser);
-						developerView.show();
-					} else if (currentRoleUser.equals(RoleConst.PIC.getRoleCode())) {
-						picView.setIdCurrentUser(idUser);
-						picView.setNameUser(currentNameUser);
-						picView.show();
+						if (currentRoleUser.equals(RoleConst.SUPERADMIN.getRoleCode())) {
+							superAdminView.setIdCurrentUser(idUser);
+							superAdminView.setNameUser(currentNameUser);
+							superAdminView.show();
+						} else if (currentRoleUser.equals(RoleConst.CUST.getRoleCode())) {
+							customerView.setIdCurrentUser(idUser);
+							customerView.setNameUser(currentNameUser);
+							customerView.show();
+						} else if (currentRoleUser.equals(RoleConst.DEVELOPER.getRoleCode())) {
+							developerView.setIdCurrentUser(idUser);
+							developerView.setNameUser(currentNameUser);
+							developerView.show();
+						} else if (currentRoleUser.equals(RoleConst.PIC.getRoleCode())) {
+							picView.setIdCurrentUser(idUser);
+							picView.setNameUser(currentNameUser);
+							picView.show();
+						}
+					} else {
+						System.out.println("Email atau password yang anda masukkan salah");
 					}
 				} else {
 					System.out.println("Email atau password yang anda masukkan salah");
 				}
-			} else {
-				System.out.println("Email atau password yang anda masukkan salah");
+			} else if (choice == 2) {
+				this.isRunning=false;
+				System.out.println("Terimakasih telah menggunakan aplikasi ini");
 			}
-		} else if (choice == 2) {
-			System.out.println("Terimakasih telah menggunakan aplikasi ini");
 		}
-
 	}
 }

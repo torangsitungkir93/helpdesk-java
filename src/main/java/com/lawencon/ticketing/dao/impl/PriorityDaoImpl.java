@@ -26,5 +26,11 @@ public class PriorityDaoImpl implements PriorityDao{
 		final List<Priority> priorities = this.em.createNativeQuery(sql,Priority.class).getResultList();
 		return priorities;
 	}
+
+	@Override
+	public Priority getByIdRef(Long id) throws SQLException {
+		final Priority priority = this.em.getReference(Priority.class, id);
+		return priority;
+	}
 	
 }

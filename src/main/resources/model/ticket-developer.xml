@@ -5,7 +5,7 @@
 
 
 <hibernate-mapping package="com.lawencon.ticketing.model">
-	<class name="TicketDeveloper" table="t_ticketDeveloper">
+	<class name="TicketDeveloper" table="t_ticket_developer">
 		<id name="id">
 			<generator class="increment"/>
 		</id>

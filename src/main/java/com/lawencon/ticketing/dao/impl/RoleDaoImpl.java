@@ -21,8 +21,15 @@ public class RoleDaoImpl implements RoleDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getAll() throws SQLException {
-		final String sql = "SELECT * FROM t_role";
+		final String sql = "SELECT * FROM t_role "
+				+ "WHERE code_role <> 'ADM' ";
 		final List<Role> roles = this.em.createNativeQuery(sql,Role.class).getResultList();
 		return roles;
+	}
+
+	@Override
+	public Role getById(Long id) throws SQLException {
+		final Role role = this.em.find(Role.class, id);
+		return role;
 	}
 }

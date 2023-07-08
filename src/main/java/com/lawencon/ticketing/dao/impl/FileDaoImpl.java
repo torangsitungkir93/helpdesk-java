@@ -1,13 +1,8 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
 

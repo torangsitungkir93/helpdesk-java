@@ -12,7 +12,7 @@
 		
 		<many-to-one name="user"  class="User" column="user_id" not-null="true"/>
 		<many-to-one name="ticket" class="Ticket" column="ticket_id" not-null="true"/>
-		<property name="message" column="full_name" length="225"/>
+		<property name="message" column="message" length="225"/>
 		<property name="createdBy" column="created_by" not-null="true"/>
 		<property name="createdAt" column="created_at" not-null="true"/>
 		<property name="updatedBy" column="updated_by"/>
