@@ -6,6 +6,6 @@ import java.util.List;
 import com.lawencon.ticketing.model.CommentAttach;
 
 public interface CommentAttachDao {
-	CommentAttach insert(CommentAttach commentAttach) throws SQLException;
-	List<CommentAttach> getAllByComment (Long commentId) throws SQLException;
+	CommentAttach insert(CommentAttach commentAttach) ;
+	List<CommentAttach> getAllByComment (Long commentId) ;
 }

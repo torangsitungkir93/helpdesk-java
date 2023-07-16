@@ -5,6 +5,6 @@ import java.sql.SQLException;
 import com.lawencon.ticketing.model.Status;
 
 public interface StatusDao {
-	Status getStatusByCode(String code) throws SQLException;
-	Status getByIdRef(Long id) throws SQLException;
+	Status getStatusByCode(String code) ;
+	Status getByIdRef(Long id) ;
 }

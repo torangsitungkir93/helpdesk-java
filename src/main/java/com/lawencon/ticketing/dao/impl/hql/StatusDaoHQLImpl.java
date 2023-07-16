@@ -1,22 +1,26 @@
 package com.lawencon.ticketing.dao.impl.hql;
 
 import java.sql.SQLException;
-import javax.persistence.EntityManager;
-import org.hibernate.SessionFactory;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
+
 import com.lawencon.ticketing.dao.StatusDao;
 import com.lawencon.ticketing.model.Status;
 
+
+@Repository
+@Profile("hql-query")
 public class StatusDaoHQLImpl implements StatusDao{
-	private final EntityManager em;
 	
-	public StatusDaoHQLImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Override
-	public Status getStatusByCode(String code) throws SQLException {
+	public Status getStatusByCode(String code){
 	    final String sql = "SELECT s.id AS status_id, s.statusName AS status, s.statusCode AS code "
 	    		+ "FROM Status s "
 	    		+ "WHERE s.statusCode = :code";
@@ -38,7 +42,7 @@ public class StatusDaoHQLImpl implements StatusDao{
 	}
 
 	@Override
-	public Status getByIdRef(Long id) throws SQLException {
+	public Status getByIdRef(Long id){
 		final Status status = this.em.getReference(Status.class, id);
 		return status;
 	}

@@ -1,24 +1,23 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.PicCustomerDao;
 import com.lawencon.ticketing.model.PicCustomer;
 
+
+@Repository
+@Profile("native")
 public class PicCustomerDaoImpl implements PicCustomerDao {
-	private final EntityManager em;
-	
-	public PicCustomerDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
-	public PicCustomer insert(PicCustomer picCustomer) throws SQLException {
+	public PicCustomer insert(PicCustomer picCustomer) {
 		em.persist(picCustomer);
 		 return picCustomer;
 	}

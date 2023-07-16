@@ -6,5 +6,5 @@ import com.lawencon.ticketing.model.FileTicket;
 
 
 public interface FileTicketDao {
-	FileTicket insert(FileTicket fileTicket) throws SQLException;
+	FileTicket insert(FileTicket fileTicket);
 }

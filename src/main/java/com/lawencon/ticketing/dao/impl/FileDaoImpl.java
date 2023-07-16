@@ -1,36 +1,35 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.FileDao;
 import com.lawencon.ticketing.model.File;
 
-public class FileDaoImpl implements FileDao {
-	private final EntityManager em;
 
-	public FileDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+@Repository
+@Profile("native")
+public class FileDaoImpl implements FileDao {
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
-	public File getById(Long fileId) throws SQLException {
+	public File getById(Long fileId) {
 		final File user = this.em.find(File.class, fileId);
 		return user;
 	}
 
 	@Override
-	public File insert(File file) throws SQLException {
+	public File insert(File file) {
 		em.persist(file);
 		return file;
 	}
 
 	@Override
-	public boolean deleteById(Long id) throws SQLException {
+	public boolean deleteById(Long id) {
 		final String sql = "DELETE FROM t_file WHERE id = :id";
 		final Integer result = em.createNativeQuery(sql).setParameter("id", id).executeUpdate();
 		return result > 0;

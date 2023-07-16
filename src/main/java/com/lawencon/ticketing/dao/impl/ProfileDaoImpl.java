@@ -1,36 +1,34 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.ProfileDao;
 import com.lawencon.ticketing.model.Profile;
 
+
+@Repository
+@org.springframework.context.annotation.Profile("native")
 public class ProfileDaoImpl implements ProfileDao{
-	private final EntityManager em;
-	
-	public ProfileDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Override
-	public Profile getById(Long profileId) throws SQLException {
+	public Profile getById(Long profileId) {
 		final Profile profile = this.em.find(Profile.class, profileId);
 		return profile;
 	}
 
 	@Override
-	public Profile insert(Profile profile) throws SQLException {
+	public Profile insert(Profile profile) {
 		em.persist(profile);
 		return profile;
 	}
 
 	@Override
-	public Profile update(Profile profile) throws SQLException {
+	public Profile update(Profile profile) {
 		return profile;
 	}
 }

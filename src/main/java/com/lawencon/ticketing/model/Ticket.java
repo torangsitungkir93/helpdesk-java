@@ -1,14 +1,35 @@
 package com.lawencon.ticketing.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "t_ticket")
 public class Ticket extends BaseModel{
+	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
+	@ManyToOne
+	@JoinColumn(name = "priority_id")
 	private Priority priority;
+	@ManyToOne
+	@JoinColumn(name = "ticket_status_id")
 	private Status status;
-	private String ticketCode;
-	private String ticketTitle;
-	private String ticketBody;
-	private Product product;
 	
+	@Column(name = "ticket_code",unique = true,length =10,nullable = false)
+	private String ticketCode;
+	@Column(name = "ticket_title",length =30,nullable = false)
+	private String ticketTitle;
+	@Column(name = "ticket_body",nullable = false)
+	private String ticketBody;
+	
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
+
 	public User getUser() {
 		return user;
 	}

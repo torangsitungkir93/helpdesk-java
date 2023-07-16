@@ -1,13 +1,12 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.SQLException;
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Service;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.constant.RoleConst;
 import com.lawencon.ticketing.constant.StatusConst;
 import com.lawencon.ticketing.dao.RoleDao;
@@ -15,17 +14,19 @@ import com.lawencon.ticketing.dao.StatusDao;
 import com.lawencon.ticketing.model.Status;
 import com.lawencon.ticketing.service.StatusService;
 
+
+@Service
 public class StatusServiceImpl implements StatusService{
 	private final StatusDao statusDao;
-	private final EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 	
-	public StatusServiceImpl(RoleDao roleDao, StatusDao statusDao,DataSource dataSource,SessionFactory factory) throws SQLException {
+	public StatusServiceImpl(RoleDao roleDao, StatusDao statusDao,DataSource dataSource,SessionFactory factory) {
 		this.statusDao = statusDao;
-		this.em = EntityManagerConfig.get(factory);
 	}
 
 	@Override
-	public Status getByRoleAndStatus(String roleCode, String statusCode) throws SQLException {
+	public Status getByRoleAndStatus(String roleCode, String statusCode) {
 		Status status = null;
 		if(roleCode !=null && statusCode!=null) {
 			if(roleCode.equals(RoleConst.CUST.getRoleCode())
@@ -60,7 +61,7 @@ public class StatusServiceImpl implements StatusService{
 	}
 
 	@Override
-	public Status getByIdRef(Long id) throws SQLException {
+	public Status getByIdRef(Long id) {
 		final Status status = statusDao.getByIdRef(id);
 		return status;
 	}

@@ -1,28 +1,27 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
+import com.lawencon.ticketing.dao.UserDao;
 import com.lawencon.ticketing.model.Profile;
 import com.lawencon.ticketing.model.Role;
-import com.lawencon.ticketing.config.EntityManagerConfig;
-import com.lawencon.ticketing.dao.UserDao;
 import com.lawencon.ticketing.model.User;
 
-public class UserDaoImpl implements UserDao {
-	private final EntityManager em;
 
-	public UserDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+@Repository
+@org.springframework.context.annotation.Profile("native")
+public class UserDaoImpl implements UserDao {
+	@PersistenceContext
+	private EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getAll() throws SQLException {
+	public List<User> getAll() {
 		final String sql = "SELECT " + "* " + "FROM t_users";
 		final List<User> users = this.em.createNativeQuery(sql, User.class).getResultList();
 		return users;
@@ -30,7 +29,7 @@ public class UserDaoImpl implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getByRoleCode(String roleCode) throws SQLException {
+	public List<User> getByRoleCode(String roleCode) {
 		final String sql = "SELECT " 
 				+ "	* " 
 				+ "FROM " 
@@ -45,7 +44,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User getByUserNameAndPassword(String email, String passwordUser) throws SQLException {
+	public User getByUserNameAndPassword(String email, String passwordUser) {
 		final String sql = "SELECT u.id as user_id,tp.full_name,r.code_role "
 				+ "FROM t_users u "
 				+ "INNER JOIN t_role r ON r.id = u.role_id INNER JOIN t_profile tp ON u.profile_id= tp.id "
@@ -76,19 +75,19 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User insert(User user) throws SQLException {
+	public User insert(User user) {
 		em.persist(user);
 		return user;
 	}
 
 	@Override
-	public User getById(Long userId) throws SQLException {
+	public User getById(Long userId) {
 		final User user = this.em.find(User.class, userId);
 		return user;
 	}
 
 	@Override
-	public Profile update(Profile profile) throws SQLException {
+	public Profile update(Profile profile) {
 		Profile profileResult = this.em.merge(profile);
 		this.em.flush();
 		return profileResult;

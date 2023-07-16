@@ -4,22 +4,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.PriorityDao;
 import com.lawencon.ticketing.model.Priority;
 
+
+@Repository
+@Profile("hql-query")
 public class PriorityDaoHQLImpl implements PriorityDao{
-	private final EntityManager em;
 	
-	public PriorityDaoHQLImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Override
-	public List<Priority> getAll() throws SQLException {
+	public List<Priority> getAll(){
 		final String sql = "SELECT tp FROM Priority tp";
 		
 		final List<Priority> priorities = this.em.createQuery(sql,Priority.class).getResultList();
@@ -27,7 +29,7 @@ public class PriorityDaoHQLImpl implements PriorityDao{
 	}
 
 	@Override
-	public Priority getByIdRef(Long id) throws SQLException {
+	public Priority getByIdRef(Long id){
 		final Priority priority = this.em.getReference(Priority.class, id);
 		return priority;
 	}

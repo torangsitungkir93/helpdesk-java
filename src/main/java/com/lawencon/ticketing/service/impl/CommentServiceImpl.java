@@ -1,15 +1,13 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Service;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.CommentAttachDao;
 import com.lawencon.ticketing.dao.CommentDao;
 import com.lawencon.ticketing.dao.FileDao;
@@ -22,27 +20,28 @@ import com.lawencon.ticketing.model.Ticket;
 import com.lawencon.ticketing.model.User;
 import com.lawencon.ticketing.service.CommentService;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
 	private final FileDao fileDao;
 	private final CommentAttachDao commentAttachDao;
 	private final CommentDao commentDao;
 	private final UserDao userDao;
-	private final EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 
 	public CommentServiceImpl(TicketDao ticketDao, FileDao fileDao, CommentAttachDao commentAttachDao,
-			CommentDao commentDao, DataSource dataSource,UserDao userDao,SessionFactory factory) throws SQLException {
+			CommentDao commentDao,UserDao userDao){
 		this.fileDao = fileDao;
 		this.commentAttachDao = commentAttachDao;
 		this.commentDao = commentDao;
 		this.userDao = userDao;
-		this.em = EntityManagerConfig.get(factory);
 	}
 
 
 	@Override
 	public Comment createComment(Long userId, Long ticketId, String message, Long createdById, List<File> fileLists)
-			throws SQLException {
+			{
 
 		final Comment comment = new Comment();
 		final Ticket ticket = new Ticket();
@@ -90,13 +89,13 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<Comment> getAllByTicket(Long commentId) throws SQLException {
+	public List<Comment> getAllByTicket(Long commentId){
 		final List<Comment> comments = commentDao.getAllByTicket(commentId);
 		return comments;
 	}
 
 	@Override
-	public List<CommentAttach> getAllByComment(Long commentId) throws SQLException {
+	public List<CommentAttach> getAllByComment(Long commentId){
 		final List<CommentAttach> commentAttachs = commentAttachDao.getAllByComment(commentId);
 		return commentAttachs;
 	}

@@ -1,7 +1,20 @@
 package com.lawencon.ticketing.model;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "t_file_ticket")
 public class FileTicket extends BaseModel{
+	
+	@ManyToOne
+	@JoinColumn(name = "ticket_id")
 	private Ticket ticket;
+	@ManyToOne
+	@JoinColumn(name = "file_id")
 	private File file;
 	
 	public Ticket getTicket() {

@@ -5,31 +5,33 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Service;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.CompanyDao;
 import com.lawencon.ticketing.dao.FileDao;
 import com.lawencon.ticketing.model.Company;
 import com.lawencon.ticketing.model.File;
 import com.lawencon.ticketing.service.CompanyService;
 
+@Service
 public class CompanyServiceImpl implements CompanyService{
 	
 	private CompanyDao companyDao;
 	private FileDao fileDao;
-	private final EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 
 	public CompanyServiceImpl(CompanyDao companyDao,FileDao fileDao,DataSource dataSource,SessionFactory factory)throws SQLException {
 		this.companyDao = companyDao;
 		this.fileDao = fileDao;
-		this.em = EntityManagerConfig.get(factory);
 	}
 
 	@Override
-	public List<Company> getAllCompany() throws SQLException {
+	public List<Company> getAllCompany() {
 		final List<Company> companies = companyDao.getAll();
 		return companies;
 	}
@@ -70,7 +72,7 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public Company updateCompany(Long companyId, String name, String address, File file,Long createdBy) throws SQLException {
+	public Company updateCompany(Long companyId, String name, String address, File file,Long createdBy) {
 		Company company = null;
 		try {
 			this.em.getTransaction().begin();

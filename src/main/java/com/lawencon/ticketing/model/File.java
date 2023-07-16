@@ -1,7 +1,15 @@
 package com.lawencon.ticketing.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "t_file")
 public class File extends BaseModel{
+	@Column(name = "ext",length =5,nullable = false)
 	private String ext;
+	@Column(name = "files")
 	private String files;
 	
 	public String getExt() {

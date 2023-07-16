@@ -1,41 +1,37 @@
 package com.lawencon.ticketing.service.impl;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Service;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.ProductDao;
-import com.lawencon.ticketing.model.Company;
-import com.lawencon.ticketing.model.File;
 import com.lawencon.ticketing.model.Product;
-import com.lawencon.ticketing.model.Profile;
-import com.lawencon.ticketing.model.Role;
-import com.lawencon.ticketing.model.User;
 import com.lawencon.ticketing.service.ProductService;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 	private final ProductDao productDao;
-	private final EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 	
-	public ProductServiceImpl(ProductDao productDao,DataSource dataSource,SessionFactory factory) throws SQLException {
+	public ProductServiceImpl(ProductDao productDao,DataSource dataSource,SessionFactory factory) {
 		this.productDao = productDao;
-		this.em = EntityManagerConfig.get(factory);
 	}
 
 	@Override
-	public List<Product> getAll() throws Exception {
+	public List<Product> getAll() {
 		final List<Product> products = productDao.getAll();
 		return products;
 	}
 
 	@Override
-	public Product insertProduct(String productCode, String productName, Long createdById) throws SQLException {
+	public Product insertProduct(String productCode, String productName, Long createdById) {
 		Product product = new Product();
 		try {
 			this.em.getTransaction().begin();
@@ -62,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product updateProduct(Long idProduct,String productName,Long createdBy) throws SQLException {
+	public Product updateProduct(Long idProduct,String productName,Long createdBy) {
 		Product updatedProduct = new Product();
 		try {
 			this.em.getTransaction().begin();

@@ -1,9 +1,22 @@
 package com.lawencon.ticketing.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "t_company")
 public class Company extends BaseModel{
+	@Column(name = "name_company",length =30,nullable = false)
 	private String nameCompany;
+	@Column(name = "company_address",nullable = false)
 	private String companyAddress;
+	@Column(name = "company_code",unique=true,length =10,nullable = false)
 	private String companyCode;
+	@ManyToOne
+	@JoinColumn(name = "photo_id")
 	private File photoId;
 	
 	

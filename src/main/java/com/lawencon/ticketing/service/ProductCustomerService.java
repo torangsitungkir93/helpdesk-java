@@ -1,11 +1,12 @@
 package com.lawencon.ticketing.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import com.lawencon.ticketing.model.ProductCustomer;
+import com.lawencon.ticketing.dto.InsertResDto;
+import com.lawencon.ticketing.dto.productcustomer.ProductCustReqDto;
+import com.lawencon.ticketing.dto.productcustomer.ProductCustResDto;
 
 public interface ProductCustomerService {
-	List<ProductCustomer> getAllByIdCust(Long idCust) throws SQLException;
-	ProductCustomer insert(Long userId,Long productId,Long createdById) throws SQLException;
+	List<ProductCustResDto> getAll(Long idCust);
+	InsertResDto insert(ProductCustReqDto dto) ;
 }

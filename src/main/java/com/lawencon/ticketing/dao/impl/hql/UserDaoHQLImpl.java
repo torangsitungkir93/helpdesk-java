@@ -5,31 +5,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
+import com.lawencon.ticketing.dao.UserDao;
 import com.lawencon.ticketing.model.Profile;
 import com.lawencon.ticketing.model.Role;
-import com.lawencon.ticketing.config.EntityManagerConfig;
-import com.lawencon.ticketing.dao.UserDao;
 import com.lawencon.ticketing.model.User;
 
-public class UserDaoHQLImpl implements UserDao {
-	private final EntityManager em;
 
-	public UserDaoHQLImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+@Repository
+@org.springframework.context.annotation.Profile("hql-query")
+public class UserDaoHQLImpl implements UserDao {
+	
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
-	public List<User> getAll() throws SQLException {
+	public List<User> getAll(){
 		final String sql = "SELECT u FROM User AS u";
 		final List<User> users = this.em.createQuery(sql, User.class).getResultList();
 		return users;
 	}
 
 	@Override
-	public List<User> getByRoleCode(String roleCode) throws SQLException {
+	public List<User> getByRoleCode(String roleCode){
 		final List<User> users = new ArrayList<>();
 		final String sql = "SELECT " 
 				+ "u.id, u.role.codeRole,u.profile.fullName " 
@@ -61,7 +62,7 @@ public class UserDaoHQLImpl implements UserDao {
 	}					
 
 	@Override
-	public User getByUserNameAndPassword(String email, String passwordUser) throws SQLException {
+	public User getByUserNameAndPassword(String email, String passwordUser){
 		final String sql = "SELECT u.id,u.profile.fullName,u.role.codeRole "
 				+ "FROM User u "
 				+ "WHERE u.userEmail = :email AND u.passwordUser =:password";
@@ -98,20 +99,20 @@ public class UserDaoHQLImpl implements UserDao {
 	
 
 	@Override
-	public User insert(User user) throws SQLException {
+	public User insert(User user){
 		em.persist(user);
 		return user;
 	}
 
 	@Override
-	public User getById(Long userId) throws SQLException {
+	public User getById(Long userId){
 		final User user = this.em.find(User.class, userId);
 		return user;
 	}
 
 
 	@Override
-	public Profile update(Profile profile) throws SQLException {
+	public Profile update(Profile profile){
 		Profile profileResult = this.em.merge(profile);
 		this.em.flush();
 		return profileResult;

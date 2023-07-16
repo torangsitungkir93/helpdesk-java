@@ -4,22 +4,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.ProductCustomerDao;
 import com.lawencon.ticketing.model.ProductCustomer;
 
+
+@Repository
+@Profile("hql-query")
 public class ProductCustomerDaoHQLImpl implements ProductCustomerDao{
-	private final EntityManager em;
 	
-	public ProductCustomerDaoHQLImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Override
-	public List<ProductCustomer> getAll() throws SQLException {
+	public List<ProductCustomer> getAll(){
 		final String sql = "SELECT pc FROM ProductCustomer";
 		
 		final List<ProductCustomer> productCusts = this.em.createQuery(sql,ProductCustomer.class).getResultList();
@@ -27,13 +29,13 @@ public class ProductCustomerDaoHQLImpl implements ProductCustomerDao{
 	}
 
 	@Override
-	public ProductCustomer insert(ProductCustomer productCustomer) throws SQLException {
+	public ProductCustomer insert(ProductCustomer productCustomer){
 		em.persist(productCustomer);
 		return productCustomer;
 	}
 
 	@Override
-	public List<ProductCustomer> getAllByIdCust(Long idCust) throws SQLException {
+	public List<ProductCustomer> getAllByIdCust(Long idCust){
 		final String sql = "SELECT pc "
 				+ "FROM ProductCustomer pc "
 				+ "WHERE pc.customer.id = :idCust";

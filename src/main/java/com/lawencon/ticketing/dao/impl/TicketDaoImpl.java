@@ -1,40 +1,40 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.TicketDao;
 import com.lawencon.ticketing.model.Ticket;
 
-public class TicketDaoImpl implements TicketDao {
-	private final EntityManager em;
 
-	public TicketDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+@Repository
+@Profile("native")
+public class TicketDaoImpl implements TicketDao {
+	@PersistenceContext
+	private EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ticket> getAll() throws SQLException {
+	public List<Ticket> getAll() {
 		final String sql = "SELECT * FROM t_ticket";
 		final List<Ticket> tickets = this.em.createNativeQuery(sql, Ticket.class).getResultList();
 		return tickets;
 	}
 
 	@Override
-	public Ticket insert(Ticket ticket) throws SQLException {
+	public Ticket insert(Ticket ticket) {
 		em.persist(ticket);
 		return ticket;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ticket> getAllByIdCust(Long idCust) throws SQLException {
+	public List<Ticket> getAllByIdCust(Long idCust) {
 		final String sql = "SELECT * " + "FROM t_ticket "
 				+ "INNER JOIN t_status ON t_ticket.ticket_status_id = t_status.id "
 				+ "INNER JOIN t_priority ON t_ticket.priority_id = t_priority.id "
@@ -47,19 +47,19 @@ public class TicketDaoImpl implements TicketDao {
 	}
 
 	@Override
-	public Ticket update(Ticket ticket) throws SQLException {
+	public Ticket update(Ticket ticket) {
 		return ticket;
 	}
 
 	@Override
-	public Ticket getTicketById(Long idTicket) throws SQLException {
+	public Ticket getTicketById(Long idTicket)  {
 		final Ticket ticket = this.em.find(Ticket.class, idTicket);
 		return ticket;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ticket> getAllByIdPic(Long idPic, String statusCode, String statusCode2) throws SQLException {
+	public List<Ticket> getAllByIdPic(Long idPic, String statusCode, String statusCode2) {
 		final String sql = "SELECT * " + "FROM t_ticket tt " 
 				+ "INNER JOIN t_status ts ON ts.id = tt.ticket_status_id "
 				+ "INNER JOIN t_pic_customer tpc ON tpc.customer_id = tt.user_id "
@@ -76,7 +76,7 @@ public class TicketDaoImpl implements TicketDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ticket> getAllByIdDev(Long idDev, String statusCode, String statusCode2) throws SQLException {
+	public List<Ticket> getAllByIdDev(Long idDev, String statusCode, String statusCode2) {
 		final String sql = "SELECT * " + "FROM t_ticket tt " + "INNER JOIN t_status ts ON ts.id = tt.ticket_status_id "
 				+ "INNER JOIN t_ticket_developer ttd ON ttd.ticket_id = tt.id "
 				+ "INNER JOIN t_users tu ON ttd.developer_id = tu.id "

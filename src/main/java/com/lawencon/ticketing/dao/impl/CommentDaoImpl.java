@@ -1,32 +1,32 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.CommentDao;
 import com.lawencon.ticketing.model.Comment;
 
+
+@Repository
+@Profile("native")
 public class CommentDaoImpl implements CommentDao{
-	private final EntityManager em;
-	
-	public CommentDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Override
-	public Comment insert(Comment comment) throws SQLException {
+	public Comment insert(Comment comment) {
 		 em.persist(comment);
 		 return comment;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Comment> getAllByTicket(Long commentId) throws SQLException {
+	public List<Comment> getAllByTicket(Long commentId) {
 		final String sql = "SELECT *  "
 				+ "FROM t_comment tte  "
 				+ "INNER JOIN t_users tu ON tte.user_id = tu.id  "

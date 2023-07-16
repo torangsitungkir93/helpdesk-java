@@ -1,26 +1,26 @@
 package com.lawencon.ticketing.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import com.lawencon.ticketing.config.EntityManagerConfig;
 import com.lawencon.ticketing.dao.RoleDao;
 import com.lawencon.ticketing.model.Role;
 
+
+@Repository
+@Profile("native")
 public class RoleDaoImpl implements RoleDao{
-	private final EntityManager em;
-	
-	public RoleDaoImpl(SessionFactory sessionFactory) throws SQLException {
-		this.em = EntityManagerConfig.get(sessionFactory);
-	}
+	@PersistenceContext
+	private EntityManager em;
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Role> getAll() throws SQLException {
+	public List<Role> getAll(){
 		final String sql = "SELECT * FROM t_role "
 				+ "WHERE code_role <> 'ADM' ";
 		final List<Role> roles = this.em.createNativeQuery(sql,Role.class).getResultList();
@@ -28,7 +28,7 @@ public class RoleDaoImpl implements RoleDao{
 	}
 
 	@Override
-	public Role getById(Long id) throws SQLException {
+	public Role getById(Long id){
 		final Role role = this.em.find(Role.class, id);
 		return role;
 	}

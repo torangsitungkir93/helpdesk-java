@@ -1,11 +1,10 @@
 package com.lawencon.ticketing.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.lawencon.ticketing.model.Priority;
 
 public interface PriorityService {
-	List<Priority> getAll() throws SQLException;
-	Priority getByIdRef(Long id) throws SQLException;
+	List<Priority> getAll() ;
+	Priority getByIdRef(Long id) ;
 }
